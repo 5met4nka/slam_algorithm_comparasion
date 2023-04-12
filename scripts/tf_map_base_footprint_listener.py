@@ -14,7 +14,7 @@ if __name__ == '__main__':
     # определение пути к директории CATKIN_WORKSPACE
     workspace_path = os.environ['CATKIN_WORKSPACE']
     # создайте файл csv и запишите заголовки столбцов
-    with open(workspace_path + '/src/my_packages/slam_algorithm_comparasion/tf_map_base_listener.csv', mode='w') as file:
+    with open(workspace_path + '/src/slam_algorithm_comparasion/tf_map_base_listener.csv', mode='w') as file:
         writer = csv.writer(file)
         writer.writerow(['x', 'y'])
 
@@ -24,7 +24,7 @@ if __name__ == '__main__':
             trans = tfBuffer.lookup_transform('map', 'base_footprint', rospy.Time(0), rospy.Duration(1.0))
 
             # откройте файл csv и добавьте новые строки данных
-            with open(workspace_path + '/src/my_packages/slam_algorithm_comparasion/tf_map_base_listener.csv', mode='a') as file:
+            with open(workspace_path + '/src/slam_algorithm_comparasion/tf_map_base_listener.csv', mode='a') as file:
                 writer = csv.writer(file)
                 writer.writerow([trans.transform.translation.x, trans.transform.translation.y])
         except (tf2_ros.LookupException, tf2_ros.ConnectivityException, tf2_ros.ExtrapolationException):
