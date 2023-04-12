@@ -42,8 +42,8 @@ def file_rider(ground_truth_file, slam_data_file):
 def main():
     # задаем имена файлов в домашней директории
     workspace_path = os.environ['CATKIN_WORKSPACE']
-    ground_truth_file = os.path.join(workspace_path, 'src/four_ws_robot/slam_algorithm_comparasion/hector_mapping/ground_truth_listener.csv')
-    slam_data_file = os.path.join(workspace_path, 'src/four_ws_robot/slam_algorithm_comparasion/hector_mapping/tf_map_base_listener.csv')
+    ground_truth_file = os.path.join(workspace_path, 'src/my_packages/slam_algorithm_comparasion/hector_mapping/ground_truth_listener.csv')
+    slam_data_file = os.path.join(workspace_path, 'src/my_packages/slam_algorithm_comparasion/hector_mapping/tf_map_base_listener.csv')
 
     # читаем данные из файлов
     ground_truth_data, slam_data = file_rider(ground_truth_file, slam_data_file)
