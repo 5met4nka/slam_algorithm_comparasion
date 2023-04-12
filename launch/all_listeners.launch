@@ -1,0 +1,6 @@
+<launch>
+    <group ns="coord_listeners">
+        <node name="ground_truth_listener" pkg="slam_algorithm_comparasion" type="ground_truth_listener.py" output="screen"/>
+        <node name="tf_map_base_footprint_listener" pkg="slam_algorithm_comparasion" type="tf_map_base_footprint_listener.py" output="screen"/>
+    </group>
+</launch>
