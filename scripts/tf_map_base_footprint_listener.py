@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 
+import os
+import csv
 import rospy
 import tf2_ros
-import csv
-import os
 
 if __name__ == '__main__':
     rospy.init_node('tf_map_base_listener', anonymous=False)
@@ -13,8 +13,9 @@ if __name__ == '__main__':
 
     # определение пути к директории CATKIN_WORKSPACE
     workspace_path = os.environ['CATKIN_WORKSPACE']
+    file_path = os.path.join(workspace_path, 'src/slam_algorithm_comparasion/tf_map_base_listener.csv')
     # создайте файл csv и запишите заголовки столбцов
-    with open(workspace_path + '/src/slam_algorithm_comparasion/tf_map_base_listener.csv', mode='w') as file:
+    with open(file_path, mode='w', newline='') as file:
         writer = csv.writer(file)
         writer.writerow(['x', 'y'])
 
@@ -27,7 +28,9 @@ if __name__ == '__main__':
             with open(workspace_path + '/src/slam_algorithm_comparasion/tf_map_base_listener.csv', mode='a') as file:
                 writer = csv.writer(file)
                 writer.writerow([trans.transform.translation.x, trans.transform.translation.y])
-        except (tf2_ros.LookupException, tf2_ros.ConnectivityException, tf2_ros.ExtrapolationException):
-            continue
 
-        rate.sleep()
+            rate.sleep()
+
+        except (tf2_ros.LookupException, tf2_ros.ConnectivityException, tf2_ros.ExtrapolationException):
+            rate.sleep()
+            continue

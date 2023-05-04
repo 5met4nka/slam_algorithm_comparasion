@@ -1,6 +1,8 @@
+#!/usr/bin/env python
+
+import os
 import csv
 import math
-import os
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -42,8 +44,8 @@ def file_rider(ground_truth_file, slam_data_file):
 def main():
     # задаем имена файлов в домашней директории
     workspace_path = os.environ['CATKIN_WORKSPACE']
-    ground_truth_file = os.path.join(workspace_path, 'src/slam_algorithm_comparasion/hector_mapping/ground_truth_listener.csv')
-    slam_data_file = os.path.join(workspace_path, 'src/slam_algorithm_comparasion/hector_mapping/tf_map_base_listener.csv')
+    ground_truth_file = os.path.join(workspace_path, 'src/slam_algorithm_comparasion/ground_truth_listener.csv')
+    slam_data_file = os.path.join(workspace_path, 'src/slam_algorithm_comparasion/tf_map_base_listener.csv')
 
     # читаем данные из файлов
     ground_truth_data, slam_data = file_rider(ground_truth_file, slam_data_file)
@@ -61,6 +63,10 @@ def main():
     print("Standard deviation for X:", std_dev_x)
     print("Standard deviation for Y:", std_dev_y)
 
+    # вычисление массива цветов в зависимости от ошибки
+    errors = [(abs(slam_data_x[i] - ground_truth_data_x[i]), abs(slam_data_y[i] - ground_truth_data_y[i])) for i in range(len(slam_data_x))]
+    colors = [(((error[0])**2 + (error[1])**2)**0.5) for error in errors]
+
     # построение данных для ground truth и SLAM
     plt.plot(
             ground_truth_data_x,
@@ -69,62 +75,68 @@ def main():
             color='black',
             label='Ground Truth Data'
             )
-    plt.plot(
-            slam_data_x,
-            slam_data_y,
-            linestyle='--',
-            color='black',
-            label='SLAM Data'
-            )
+    plt.scatter(
+                slam_data_x,
+                slam_data_y,
+                marker='.',
+                c=colors,
+                cmap='RdYlGn_r',
+                label='SLAM Data'
+                )
+    plt.colorbar()
     plt.legend()
+    plt.title('Coordinate Data')
     plt.show()
 
     # построение данных по координате X для ground truth и SLAM
     plt.xlim(0, len(ground_truth_data_x))
+    colors = [(error[0]) for error in errors]
     plt.plot(
             ground_truth_data_x,
             linestyle='-',
             color='black',
             label='Ground Truth Data'
             )
-    plt.plot(
-            slam_data_x,
-            linestyle='--',
-            color='black',
-            label='SLAM Data'
-            )
+    plt.scatter(
+                range(len(slam_data_x)),
+                slam_data_x,
+                marker='.',
+                c=colors,
+                cmap='RdYlGn_r',
+                label='SLAM Data'
+                )
+    plt.colorbar()
     plt.legend()
     plt.title('X Coordinate Data')
     plt.show()
 
     # построение данных по координате Y для ground truth и SLAM
     plt.xlim(0, len(ground_truth_data_y))
+    colors = [(error[1]) for error in errors]
     plt.plot(
             ground_truth_data_y,
             linestyle='-',
             color='black',
             label='Ground Truth Data'
             )
-    plt.plot(
-            slam_data_y,
-            linestyle='--',
-            color='black',
-            label='SLAM Data'
-            )
+    plt.scatter(
+                range(len(slam_data_y)),
+                slam_data_y,
+                marker='.',
+                c=colors,
+                cmap='RdYlGn_r',
+                label='SLAM Data'
+                )
+    plt.colorbar()
     plt.legend()
     plt.title('Y Coordinate Data')
     plt.show()
 
     # построение графика отклонения SLAM от Ground Truth для X
     x_error = [(gt - slam) for gt, slam in zip(ground_truth_data_x, slam_data_x)]
+    colors = [(error[0]) for error in errors]
     plt.xlim(0, len(x_error))
     plt.ylim(-0.5, 0.5)
-    plt.plot(
-            x_error,
-            linestyle='-',
-            color='black',
-            label='X Error'
-            )
     plt.plot(
             [0, len(x_error)],
             [0, 0],
@@ -132,6 +144,14 @@ def main():
             color='black',
             label='Expected value'
             )
+    plt.scatter(
+                range(len(x_error)),
+                x_error,
+                marker='.',
+                c=colors,
+                cmap='RdYlGn_r',
+                label='X Error'
+                )
     x_std_dev = np.std(x_error)
     plt.fill_between(
                     range(len(x_error)),
@@ -141,20 +161,16 @@ def main():
                     color='black',
                     label='STD'
                     )
+    plt.colorbar()
     plt.legend()
     plt.title('SLAM Error (X Coordinate)')
     plt.show()
 
     # построение графика отклонения SLAM от Ground Truth для Y
     y_error = [(gt - slam) for gt, slam in zip(ground_truth_data_y, slam_data_y)]
+    colors = [(error[1]) for error in errors]
     plt.xlim(0, len(y_error))
     plt.ylim(-0.5, 0.5)
-    plt.plot(
-            y_error,
-            linestyle='-',
-            color='black',
-            label='Y Error'
-            )
     plt.plot(
             [0, len(x_error)],
             [0, 0],
@@ -162,6 +178,14 @@ def main():
             color='black',
             label='Expected value'
             )
+    plt.scatter(
+                range(len(y_error)),
+                y_error,
+                marker='.',
+                c=colors,
+                cmap='RdYlGn_r',
+                label='Y Error'
+                )
     y_std_dev = np.std(y_error)
     plt.fill_between(
                     range(len(y_error)),
@@ -171,6 +195,7 @@ def main():
                     color='black',
                     label='STD'
                     )
+    plt.colorbar()
     plt.legend()
     plt.title('SLAM Error (Y Coordinate)')
     plt.show()
