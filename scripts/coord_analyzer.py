@@ -35,12 +35,6 @@ def calculate_std_dev(slam_data_x, slam_data_y, ground_truth_data_x, ground_trut
     std_dev_y = math.sqrt(ssd_y / (len(differences_y) - 1))
     return std_dev_x, std_dev_y
 
-def file_rider(ground_truth_file, slam_data_file):
-    # чтение данных из файлов
-    ground_truth_data = read_csv(ground_truth_file)
-    slam_data = read_csv(slam_data_file)
-    return ground_truth_data, slam_data
-
 def main():
     # задаем имена файлов в домашней директории
     workspace_path = os.environ['CATKIN_WORKSPACE']
@@ -48,7 +42,8 @@ def main():
     slam_data_file = os.path.join(workspace_path, 'src/slam_algorithm_comparasion/tf_map_base_listener.csv')
 
     # читаем данные из файлов
-    ground_truth_data, slam_data = file_rider(ground_truth_file, slam_data_file)
+    ground_truth_data = read_csv(ground_truth_file)
+    slam_data = read_csv(slam_data_file)
 
     # разделение координат X и Y
     slam_data_x = [x[0] for x in slam_data]
@@ -63,11 +58,9 @@ def main():
     print("Standard deviation for X:", std_dev_x)
     print("Standard deviation for Y:", std_dev_y)
 
-    # вычисление массива цветов в зависимости от ошибки
+    # построение данных для ground truth и SLAM
     errors = [(abs(slam_data_x[i] - ground_truth_data_x[i]), abs(slam_data_y[i] - ground_truth_data_y[i])) for i in range(len(slam_data_x))]
     colors = [(((error[0])**2 + (error[1])**2)**0.5) for error in errors]
-
-    # построение данных для ground truth и SLAM
     plt.plot(
             ground_truth_data_x,
             ground_truth_data_y,
