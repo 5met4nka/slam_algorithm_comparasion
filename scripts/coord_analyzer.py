@@ -38,8 +38,8 @@ def calculate_std_dev(slam_data_x, slam_data_y, ground_truth_data_x, ground_trut
 def main():
     # задаем имена файлов в домашней директории
     workspace_path = os.environ['CATKIN_WORKSPACE']
-    ground_truth_file = os.path.join(workspace_path, 'src/slam_algorithm_comparasion/std_0.0/slam_gmapping/ground_truth_listener.csv')
-    slam_data_file = os.path.join(workspace_path, 'src/slam_algorithm_comparasion/std_0.0/slam_gmapping/tf_map_base_listener.csv')
+    ground_truth_file = os.path.join(workspace_path, 'src/slam_algorithm_comparasion/std_0.00/slam_gmapping/ground_truth_listener.csv')
+    slam_data_file = os.path.join(workspace_path, 'src/slam_algorithm_comparasion/std_0.00/slam_gmapping/tf_map_base_listener.csv')
 
     # читаем данные из файлов
     ground_truth_data = read_csv(ground_truth_file)
