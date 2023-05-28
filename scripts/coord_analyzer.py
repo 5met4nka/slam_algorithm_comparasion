@@ -38,8 +38,8 @@ def calculate_std_dev(slam_data_x, slam_data_y, ground_truth_data_x, ground_trut
 def main():
     # задаем имена файлов в домашней директории
     workspace_path = os.environ['CATKIN_WORKSPACE']
-    ground_truth_file = os.path.join(workspace_path, 'src/slam_algorithm_comparasion/std_0.00/slam_gmapping/ground_truth_listener.csv')
-    slam_data_file = os.path.join(workspace_path, 'src/slam_algorithm_comparasion/std_0.00/slam_gmapping/tf_map_base_listener.csv')
+    ground_truth_file = os.path.join(workspace_path, 'src/slam_algorithm_comparasion/ground_truth_listener.csv')
+    slam_data_file = os.path.join(workspace_path, 'src/slam_algorithm_comparasion/tf_map_base_listener.csv')
 
     # читаем данные из файлов
     ground_truth_data = read_csv(ground_truth_file)
@@ -83,6 +83,9 @@ def main():
     plt.colorbar()
 
     plt.legend()
+    plt.xlabel('X coord, meters')
+    plt.ylabel('Y coord, meters')
+    plt.grid()
     plt.title('Coordinate Data')
     plt.show()
 
@@ -110,6 +113,8 @@ def main():
     plt.colorbar()
 
     plt.legend()
+    plt.ylabel('X coord, meters')
+    plt.grid()
     plt.title('X Coordinate Data')
     plt.show()
 
@@ -137,6 +142,8 @@ def main():
     plt.colorbar()
 
     plt.legend()
+    plt.ylabel('Y coord, meters')
+    plt.grid()
     plt.title('Y Coordinate Data')
     plt.show()
 
@@ -177,6 +184,8 @@ def main():
                     )
 
     plt.legend()
+    plt.ylabel('X coord SLAM error, meters')
+    plt.grid()
     plt.title('SLAM Error (X Coordinate)')
     plt.show()
 
@@ -217,6 +226,8 @@ def main():
                     )
 
     plt.legend()
+    plt.ylabel('Y coord SLAM error, meters')
+    plt.grid()
     plt.title('SLAM Error (Y Coordinate)')
     plt.show()
 
